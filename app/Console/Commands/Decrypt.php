@@ -3,6 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
 
 class Decrypt extends Command
 {
@@ -27,6 +28,31 @@ class Decrypt extends Command
      */
     public function handle()
     {
-        return 0;
+        if($this->option('message')) {
+            $message = $this->option('message');
+        } else {
+            $message = $this->ask('Insert message (Only A-Z or a-z)');
+        }
+
+        if($this->option('key')) {
+            $key = substr($this->option('key'), 1);
+        } else {
+            $key = $this->ask('Insert key (Only numbers)');
+        }
+
+        if(!is_numeric($key)) return false;
+
+        $key = 26 - $key;
+        
+        Artisan::call(
+            'chiper:encrypt', [
+                "--message" => $message,
+                "--key" => $key
+            ]
+        );
+
+        $this->info(Artisan::output());
+        
+        return true;
     }
 }
