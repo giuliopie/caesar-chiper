@@ -41,18 +41,17 @@ class Encrypt extends Command
         if($this->option('message')) {
             $message = $this->option('message');
         } else {
-            $message = $this->ask("Insert message (Only A-Z or a-z):");
+            $message = $this->ask('Insert message (Only A-Z or a-z)');
         }
 
         if($this->option('key')) {
             $key = str_replace('=', '', $this->option('key'));
         } else {
-            $key = $this->ask("Insert key (Only numbers):");
+            $key = $this->ask('Insert key (Only numbers)');
         }
 
         if(!is_numeric($key)) return false;
 
-        
         $chiperArray = collect(str_split($message))->map(function($item,$k) use ($key){
             return $this->chiper($item, $key);
         })->toArray();
