@@ -45,7 +45,7 @@ class Encrypt extends Command
         }
 
         if($this->option('key')) {
-            $key = substr($this->option('key'), 1);
+            $key = str_replace('=', '', $this->option('key'));
         } else {
             $key = $this->ask("Insert key (Only numbers):");
         }
